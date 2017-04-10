@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--瀹氫箟鏃ュ織鏂囦欢鐨勫瓨鍌ㄥ湴鍧� 鍕垮湪 LogBack 鐨勯厤缃腑浣跨敤鐩稿璺緞 -->
+    <property name="LOG_HOME" value="D:/log" />
+    <!-- 鎺у埗鍙拌緭鍑� -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--鏍煎紡鍖栬緭鍑�,%d:鏃ユ湡;%thread:绾跨▼鍚�;%-5level锛氱骇鍒�,浠庡乏鏄剧ず5涓瓧绗﹀搴�;%msg:鏃ュ織娑堟伅;%n:鎹㈣绗� -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 鎸夌収姣忓ぉ鐢熸垚鏃ュ織鏂囦欢 -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--鏃ュ織鏂囦欢杈撳嚭鐨勬枃浠跺悕 -->
+            <FileNamePattern>${LOG_HOME}/ms-schedulerSys.%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+            <!--鏃ュ織鏂囦欢淇濈暀澶╂暟 -->
+            <MaxHistory>180</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--鏍煎紡鍖栬緭鍑�,%d:鏃ユ湡;%thread:绾跨▼鍚�;%-5level锛氱骇鍒�,浠庡乏鏄剧ず5涓瓧绗﹀搴�;%msg:鏃ュ織娑堟伅;%n:鎹㈣绗� -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+        <!--鏃ュ織鏂囦欢鏈�澶х殑澶у皬 -->
+        <!--<triggeringPolicy-->
+                <!--class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+            <!--<MaxFileSize>10MB</MaxFileSize>-->
+        <!--</triggeringPolicy>-->
+    </appender>
+
+    <appender name="DB_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--鏃ュ織鏂囦欢杈撳嚭鐨勬枃浠跺悕 -->
+            <FileNamePattern>${LOG_HOME}/ms-schedulerDb.%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+            <!--鏃ュ織鏂囦欢淇濈暀澶╂暟 -->
+            <MaxHistory>180</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--鏍煎紡鍖栬緭鍑�,%d:鏃ユ湡;%thread:绾跨▼鍚�;%-5level锛氱骇鍒�,浠庡乏鏄剧ず5涓瓧绗﹀搴�;%msg:鏃ュ織娑堟伅;%n:鎹㈣绗� -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+        <!--鏃ュ織鏂囦欢鏈�澶х殑澶у皬 -->
+        <!--<triggeringPolicy-->
+                <!--class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+            <!--<MaxFileSize>10MB</MaxFileSize>-->
+        <!--</triggeringPolicy>-->
+    </appender>
+
+    <appender name="DEBUG_LEVEL_REMAPPER" class="org.springframework.boot.logging.logback.LevelRemappingAppender">
+        <destinationLogger>org.springframework.boot</destinationLogger>
+    </appender>
+
+    <logger name="org.thymeleaf" additivity="false">
+        <appender-ref ref="DEBUG_LEVEL_REMAPPER"/>
+    </logger>
+
+    <!--myibatis log configure -->
+    <logger name="com.apache.ibatis" level="TRACE">
+        <appender-ref ref="DB_FILE"/>
+    </logger>
+
+    <logger name="org.apache.tomcat.jdbc.pool.interceptor.SlowQueryReport" level="DEBUG">
+        <appender-ref ref="DB_FILE"/>
+    </logger>
+
+    <logger name="com.crp" level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE"/>
+    </logger>
+
+</configuration>
